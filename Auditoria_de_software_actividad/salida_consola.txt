@@ -1,0 +1,188 @@
+====================================================================================================
+                   HERRAMIENTA AUTOMATIZADA DE AUDITORIA - SISTEMA DE MATRICULAS                    
+====================================================================================================
+Archivo auditado : sistema_matriculas.py
+Ruta             : /home/claude/Auditoria_Matriculas/sistema_matriculas.py
+Lineas analizadas: 85
+Fecha y hora     : 17/09/2026 02:33:20
+Tipo de analisis : estatico (lectura de texto, sin ejecutar el sistema)
+====================================================================================================
+
+----------------------------------------------------------------------------------------------------
+CATEGORIA: VALIDACION DE DATOS
+----------------------------------------------------------------------------------------------------
+
+[A01]  Linea 6   |   Severidad: Alta
+   Evidencia      : nombre = entrada_nombre.get()
+   Hallazgo       : Se lee un campo del formulario y se usa sin verificar si esta vacio o si tiene el tipo esperado.
+   Riesgo         : Se pueden almacenar registros incompletos o con datos sin sentido (nombre vacio, edad en letras) y el sistema igual informa exito.
+   Recomendacion  : Aplicar .strip() y rechazar la operacion cuando el campo quede vacio, mostrando un mensaje al usuario.
+
+[A02]  Linea 7   |   Severidad: Alta
+   Evidencia      : documento = entrada_documento.get()
+   Hallazgo       : Se lee un campo del formulario y se usa sin verificar si esta vacio o si tiene el tipo esperado.
+   Riesgo         : Se pueden almacenar registros incompletos o con datos sin sentido (nombre vacio, edad en letras) y el sistema igual informa exito.
+   Recomendacion  : Aplicar .strip() y rechazar la operacion cuando el campo quede vacio, mostrando un mensaje al usuario.
+
+[A03]  Linea 8   |   Severidad: Alta
+   Evidencia      : edad = entrada_edad.get()
+   Hallazgo       : Se lee un campo del formulario y se usa sin verificar si esta vacio o si tiene el tipo esperado.
+   Riesgo         : Se pueden almacenar registros incompletos o con datos sin sentido (nombre vacio, edad en letras) y el sistema igual informa exito.
+   Recomendacion  : Aplicar .strip() y rechazar la operacion cuando el campo quede vacio, mostrando un mensaje al usuario.
+
+[A04]  Linea 9   |   Severidad: Alta
+   Evidencia      : programa = entrada_programa.get()
+   Hallazgo       : Se lee un campo del formulario y se usa sin verificar si esta vacio o si tiene el tipo esperado.
+   Riesgo         : Se pueden almacenar registros incompletos o con datos sin sentido (nombre vacio, edad en letras) y el sistema igual informa exito.
+   Recomendacion  : Aplicar .strip() y rechazar la operacion cuando el campo quede vacio, mostrando un mensaje al usuario.
+
+[A08]  Linea 31   |   Severidad: Alta
+   Evidencia      : documento = entrada_documento.get()
+   Hallazgo       : Se lee un campo del formulario y se usa sin verificar si esta vacio o si tiene el tipo esperado.
+   Riesgo         : Se pueden almacenar registros incompletos o con datos sin sentido (nombre vacio, edad en letras) y el sistema igual informa exito.
+   Recomendacion  : Aplicar .strip() y rechazar la operacion cuando el campo quede vacio, mostrando un mensaje al usuario.
+
+[A12]  Linea 40   |   Severidad: Alta
+   Evidencia      : edad = int(entrada_edad.get())
+   Hallazgo       : Se lee un campo del formulario y se usa sin verificar si esta vacio o si tiene el tipo esperado.
+   Riesgo         : Se pueden almacenar registros incompletos o con datos sin sentido (nombre vacio, edad en letras) y el sistema igual informa exito.
+   Recomendacion  : Aplicar .strip() y rechazar la operacion cuando el campo quede vacio, mostrando un mensaje al usuario.
+
+[A21]  Linea General   |   Severidad: Alta
+   Evidencia      : No aparecen .strip() ni comprobaciones del tipo 'if not campo'
+   Hallazgo       : No existe ninguna validacion de campos obligatorios en todo el programa.
+   Riesgo         : La ausencia de validacion no es un error aislado sino un control que falta en el sistema completo.
+   Recomendacion  : Crear una funcion unica de validacion e invocarla desde registrar, eliminar y calcular.
+
+----------------------------------------------------------------------------------------------------
+CATEGORIA: INTEGRIDAD DE LOS DATOS
+----------------------------------------------------------------------------------------------------
+
+[A05]  Linea 18   |   Severidad: Media
+   Evidencia      : estudiantes.append(estudiante)
+   Hallazgo       : Se agrega el registro a la lista sin comprobar si el documento ya fue registrado antes.
+   Riesgo         : Se generan registros duplicados con el mismo documento, lo que luego vuelve ambigua la eliminacion y los reportes.
+   Recomendacion  : Antes de agregar, recorrer la lista y rechazar el documento si ya existe.
+
+[A09]  Linea 35   |   Severidad: Alta
+   Evidencia      : estudiantes.remove(estudiante)
+   Hallazgo       : Se elimina un elemento de la lista mientras se recorre esa misma lista con un for.
+   Riesgo         : El recorrido puede saltarse elementos y no se garantiza que se afecte unicamente el registro esperado.
+   Recomendacion  : Recorrer una copia de la lista, o construir una lista nueva sin el registro, y pedir confirmacion antes de borrar.
+
+[A10]  Linea 37   |   Severidad: Media
+   Evidencia      : mensaje.config(text="Proceso terminado")
+   Hallazgo       : Mensaje de resultado fijo que se muestra sin importar si realmente se elimino algun registro.
+   Riesgo         : El usuario no distingue entre 'se elimino' y 'no se encontro', y puede creer que una operacion fallida fue exitosa.
+   Recomendacion  : Contar las coincidencias y mostrar un mensaje diferente para cada caso.
+
+----------------------------------------------------------------------------------------------------
+CATEGORIA: MANTENIBILIDAD
+----------------------------------------------------------------------------------------------------
+
+[A06]  Linea 20   |   Severidad: Media
+   Evidencia      : mensaje.config(text="Estudiante registrado correctamente")
+   Hallazgo       : La funcion de logica modifica directamente un widget global de la interfaz grafica.
+   Riesgo         : La regla de negocio queda amarrada a Tkinter: no se puede probar ni reutilizar sin abrir la ventana.
+   Recomendacion  : Separar la logica (registrar, eliminar, calcular) de la capa de presentacion; que las funciones retornen valores.
+
+[A07]  Linea 28   |   Severidad: Media
+   Evidencia      : mensaje.config(text=resultado)
+   Hallazgo       : La funcion de logica modifica directamente un widget global de la interfaz grafica.
+   Riesgo         : La regla de negocio queda amarrada a Tkinter: no se puede probar ni reutilizar sin abrir la ventana.
+   Recomendacion  : Separar la logica (registrar, eliminar, calcular) de la capa de presentacion; que las funciones retornen valores.
+
+[A11]  Linea 37   |   Severidad: Media
+   Evidencia      : mensaje.config(text="Proceso terminado")
+   Hallazgo       : La funcion de logica modifica directamente un widget global de la interfaz grafica.
+   Riesgo         : La regla de negocio queda amarrada a Tkinter: no se puede probar ni reutilizar sin abrir la ventana.
+   Recomendacion  : Separar la logica (registrar, eliminar, calcular) de la capa de presentacion; que las funciones retornen valores.
+
+[A14]  Linea 43   |   Severidad: Media
+   Evidencia      : mensaje.config(text="Estudiante mayor de edad")
+   Hallazgo       : La funcion de logica modifica directamente un widget global de la interfaz grafica.
+   Riesgo         : La regla de negocio queda amarrada a Tkinter: no se puede probar ni reutilizar sin abrir la ventana.
+   Recomendacion  : Separar la logica (registrar, eliminar, calcular) de la capa de presentacion; que las funciones retornen valores.
+
+[A15]  Linea 45   |   Severidad: Media
+   Evidencia      : mensaje.config(text="Estudiante menor de edad")
+   Hallazgo       : La funcion de logica modifica directamente un widget global de la interfaz grafica.
+   Riesgo         : La regla de negocio queda amarrada a Tkinter: no se puede probar ni reutilizar sin abrir la ventana.
+   Recomendacion  : Separar la logica (registrar, eliminar, calcular) de la capa de presentacion; que las funciones retornen valores.
+
+[A18]  Linea 53   |   Severidad: Media
+   Evidencia      : mensaje.config(text="Información guardada")
+   Hallazgo       : La funcion de logica modifica directamente un widget global de la interfaz grafica.
+   Riesgo         : La regla de negocio queda amarrada a Tkinter: no se puede probar ni reutilizar sin abrir la ventana.
+   Recomendacion  : Separar la logica (registrar, eliminar, calcular) de la capa de presentacion; que las funciones retornen valores.
+
+----------------------------------------------------------------------------------------------------
+CATEGORIA: MANEJO DE ERRORES
+----------------------------------------------------------------------------------------------------
+
+[A13]  Linea 40   |   Severidad: Alta
+   Evidencia      : edad = int(entrada_edad.get())
+   Hallazgo       : Conversion de texto a numero entero sin proteccion try/except.
+   Riesgo         : Si el texto no es numerico, Python lanza ValueError y la aplicacion se detiene; los estudiantes que solo estaban en memoria se pierden.
+   Recomendacion  : Envolver la conversion en try/except ValueError y avisar al usuario en lugar de dejar caer el programa.
+
+[A19]  Linea General   |   Severidad: Alta
+   Evidencia      : No aparece ningun bloque try: en el archivo
+   Hallazgo       : El programa completo carece de manejo de excepciones.
+   Riesgo         : Cualquier situacion inesperada (conversion invalida, fallo de disco) termina la aplicacion sin aviso ni registro.
+   Recomendacion  : Definir un manejo de errores minimo en las operaciones de conversion y de archivo.
+
+----------------------------------------------------------------------------------------------------
+CATEGORIA: GESTION DE ARCHIVOS
+----------------------------------------------------------------------------------------------------
+
+[A16]  Linea 48   |   Severidad: Alta
+   Evidencia      : archivo = open("estudiantes.txt", "w")
+   Hallazgo       : Apertura de archivo sin bloque with y sin try/except. Ademas el modo 'w' sobrescribe el contenido anterior.
+   Riesgo         : Si la ruta no existe o no hay permisos, el programa falla. Si la escritura se interrumpe, se pierde el archivo anterior y el nuevo queda incompleto.
+   Recomendacion  : Usar with open(...) dentro de try/except OSError y escribir primero en un archivo temporal antes de reemplazar.
+
+[A20]  Linea General   |   Severidad: Media
+   Evidencia      : No aparece 'with open(' ni 'close()' en el archivo
+   Hallazgo       : El archivo abierto en guardar_datos nunca se cierra de forma explicita ni con un administrador de contexto.
+   Riesgo         : El contenido puede quedar en el bufer sin escribirse y el archivo bloqueado mientras la ventana siga abierta.
+   Recomendacion  : Reemplazar open(...) por with open(...) para garantizar el cierre en todos los casos.
+
+----------------------------------------------------------------------------------------------------
+CATEGORIA: SEGURIDAD DE LA INFORMACION
+----------------------------------------------------------------------------------------------------
+
+[A17]  Linea 51   |   Severidad: Alta
+   Evidencia      : archivo.write(str(estudiante) + "\n")
+   Hallazgo       : Los datos personales se escriben en texto plano usando str() sobre el diccionario completo.
+   Riesgo         : Nombre, documento de identidad, edad y programa quedan legibles para cualquier persona con acceso a la carpeta.
+   Recomendacion  : Guardar solo los datos necesarios, usar un formato controlado (CSV o JSON) y restringir permisos o cifrar el archivo.
+
+[A22]  Linea General   |   Severidad: Alta
+   Evidencia      : No se importa ninguna libreria de proteccion de datos
+   Hallazgo       : No hay cifrado, control de acceso ni autenticacion para los datos personales que administra el sistema.
+   Riesgo         : Cualquier usuario del equipo puede abrir, copiar o modificar los datos de los estudiantes.
+   Recomendacion  : Restringir el acceso al archivo y evaluar el cifrado de los campos sensibles, empezando por el documento.
+
+====================================================================================================
+                                 RESUMEN DE LA AUDITORIA AUTOMATICA                                 
+====================================================================================================
+Total de posibles hallazgos: 22
+Severidad Alta : 13
+Severidad Media: 9
+Severidad Baja : 0
+
+Hallazgos por categoria:
+   - Validacion de datos: 7
+   - Integridad de los datos: 3
+   - Mantenibilidad: 6
+   - Manejo de errores: 2
+   - Gestion de archivos: 2
+   - Seguridad de la informacion: 2
+
+NOTA: cada linea reportada es un POSIBLE hallazgo. La herramienta apoya
+el analisis y no reemplaza el criterio del auditor; la confirmacion del
+riesgo requiere la lectura manual del codigo.
+====================================================================================================
+Matriz exportada a: /home/claude/Auditoria_Matriculas/reporte_auditoria.csv
+Reporte exportado a: /home/claude/Auditoria_Matriculas/reporte_auditoria.txt
